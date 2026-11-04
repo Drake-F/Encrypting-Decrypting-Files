@@ -40,10 +40,16 @@ def encrypt_file(file_path : str, master_password: str):
     encrypted_data = MAGIC + salt + nonce + ciphertext
 
     # Write to a seperate file - only for the time being to make sure file contents are not lost
-    output = Path(str(source) + ".enc")
+    output = Path(get_file_name(str(source)) + ".enc")
     output.write_bytes(encrypted_data)
 
     return output
+
+def get_file_name(file_name : str):
+    # Takes a file name such as test.txt or test.txt.enc and shortens it to "text" for better file naming conventions - Ensures that user entered "."s in the
+    # file name remain, keeping file naming integerity for better user access
+    last_period = file_name.rfind(".")
+    return file_name[0:last_period]
 
 def decrypt_file(file_path : str, master_password : str):
     # Decrypt a given file specified by the user with file_path : str with password, master_password : str
